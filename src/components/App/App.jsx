@@ -10,7 +10,7 @@ const TrackObjects = [
     artist: "Imminence",
     album: "Axis Mundi",
     id: "track_1",
-  },sn
+  },
   {
     name: "Faint",
     artist: "Linkin Park",
@@ -45,9 +45,9 @@ function App() {
       <Playlist></Playlist>
       <Tracklist></Tracklist>
       <Track></Track>
+      {TrackObjects}
       <button>Save to Spotify</button>
       <button>Search</button>
-      {TrackObjects}
     </>
   );
 }
