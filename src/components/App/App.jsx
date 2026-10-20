@@ -37,22 +37,6 @@ const TrackObjects = [
   },
 ];
 
-function App() {
-  return (
-    <>
-      <h1>Hello, World</h1>
-      <SearchBar></SearchBar>
-      <SearchResults results={TrackObjects}></SearchResults>
-      <Playlist></Playlist>
-      <TrackList></TrackList>
-      <Track></Track>
-      {TrackObjects}
-      <button>Save to Spotify</button>
-      <button>Search</button>
-    </>
-  );
-}
-
 const App = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [playlistName, setPlaylistName] = useState("New Playlist");
