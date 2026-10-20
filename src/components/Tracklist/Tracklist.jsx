@@ -1,3 +1,3 @@
-function Tracklist() {}
+function TrackList() {}
 
-export default Tracklist;
+export default TrackList;

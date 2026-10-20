@@ -40,6 +40,7 @@ const TrackObjects = [
 function App() {
   return (
     <>
+      <h1>Hello, World</h1>
       <SearchBar></SearchBar>
       <SearchResults results={TrackObjects}></SearchResults>
       <Playlist></Playlist>
