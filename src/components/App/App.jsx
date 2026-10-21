@@ -9,6 +9,9 @@ const App = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [playlistName, setPlaylistName] = useState("New Playlist");
   const [playlistTracks, setPlaylistTracks] = useState([]);
+  const [saveError, setSaveError] = useState("");
+  const [saveMessage, setSaveMessage] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   const search = useCallback((term) => {
     Spotify.search(term).then(setSearchResults);
@@ -34,13 +37,30 @@ const App = () => {
     setPlaylistName(name);
   }, []);
 
-  const savePlaylist = useCallback(() => {
+  const savePlaylist = useCallback(async () => {
+    if (isSaving || !playlistName.trim() || !playlistTracks.length) {
+      return;
+    }
+
     const trackUris = playlistTracks.map((track) => track.uri);
-    Spotify.savePlaylist(playlistName, trackUris).then(() => {
+    setSaveError("");
+    setSaveMessage("");
+    setIsSaving(true);
+    try {
+      await Spotify.savePlaylist(playlistName, trackUris);
       setPlaylistName("New Playlist");
       setPlaylistTracks([]);
-    });
-  }, [playlistName, playlistTracks]);
+      setSaveMessage("Playlist saved to Spotify.");
+    } catch (error) {
+      setSaveError(
+        error instanceof Error
+          ? error.message
+          : "The playlist could not be saved to Spotify.",
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  }, [isSaving, playlistName, playlistTracks]);
 
   return (
     <div>
@@ -57,6 +77,10 @@ const App = () => {
             onNameChange={updatePlaylistName}
             onRemove={removeTrack}
             onSave={savePlaylist}
+            saveError={saveError}
+            saveMessage={saveMessage}
+            isSaving={isSaving}
+            canSave={Boolean(playlistName.trim() && playlistTracks.length)}
           />
         </div>
       </div>

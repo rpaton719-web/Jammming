@@ -4,7 +4,7 @@ This template provides a minimal setup to get React working in Vite with HMR and
 
 ## Spotify setup
 
-Create a Spotify app and add the app's redirect URI to its Spotify Dashboard settings. For local development, the default redirect URI is `http://localhost:5173/`.
+Create a Spotify app and add the app's redirect URI to its Spotify Dashboard settings. For local development with Vite, set the server host to `127.0.0.1` and register `http://127.0.0.1:5173/` as the redirect URI.
 
 Create a `.env.local` file in the project root and set the Spotify app's client ID:
 

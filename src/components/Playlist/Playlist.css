@@ -40,6 +40,16 @@
   background-color: rgba(108, 65, 233, 0.7);
 }
 
+.Playlist-save:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.Playlist-status {
+  color: #fff;
+  text-align: center;
+}
+
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent;

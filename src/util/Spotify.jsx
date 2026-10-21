@@ -3,7 +3,7 @@ const redirectUri =
   import.meta.env.VITE_SPOTIFY_REDIRECT_URI || `${window.location.origin}/`;
 const tokenStorageKey = "spotify_access_token";
 const verifierStorageKey = "spotify_code_verifier";
-const scopes = "playlist-modify-public user-read-private";
+const scopes = "playlist-modify-public";
 
 const base64UrlEncode = (bytes) =>
   btoa(String.fromCharCode(...bytes))
@@ -131,32 +131,29 @@ const Spotify = {
   },
 
   async savePlaylist(name, trackUris) {
-    if (!name || !trackUris.length) {
-      return;
+    if (!name.trim() || !trackUris.length) {
+      throw new Error("Enter a playlist name and add at least one track.");
     }
 
     const accessToken = await Spotify.getAccessToken();
     if (!accessToken) {
-      return;
+      throw new Error("Spotify authorization is required to save a playlist.");
     }
 
     const headers = {
       Authorization: `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     };
-    const user = await getResponseJson(
-      await fetch("https://api.spotify.com/v1/me", { headers }),
-    );
     const playlist = await getResponseJson(
-      await fetch(`https://api.spotify.com/v1/users/${user.id}/playlists`, {
+      await fetch("https://api.spotify.com/v1/me/playlists", {
         headers,
         method: "POST",
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name, public: true }),
       }),
     );
     return getResponseJson(
       await fetch(
-        `https://api.spotify.com/v1/users/${user.id}/playlists/${playlist.id}/tracks`,
+        `https://api.spotify.com/v1/playlists/${playlist.id}/tracks`,
         {
           headers,
           method: "POST",
