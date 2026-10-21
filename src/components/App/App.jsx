@@ -67,7 +67,7 @@ const App = () => {
       <h1>
         Ja<span className="highlight">mmm</span>ing
       </h1>
-      <div className="App">
+      <div className="App" aria-busy={isSaving}>
         <SearchBar onSearch={search} />
         <div className="App-playlist">
           <SearchResults searchResults={searchResults} onAdd={addTrack} />
@@ -84,6 +84,14 @@ const App = () => {
           />
         </div>
       </div>
+      {isSaving && (
+        <div className="Save-overlay" role="status" aria-live="polite">
+          <div className="Save-overlay-content">
+            <span className="Save-spinner" aria-hidden="true" />
+            <p>Saving your playlist to Spotify...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

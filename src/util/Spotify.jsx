@@ -22,7 +22,16 @@ const createCodeChallenge = async (verifier) => {
 const getResponseJson = async (response) => {
   const result = await response.json();
   if (!response.ok) {
-    throw new Error(result.error?.message || "Spotify request failed.");
+    const errorMessage =
+      typeof result.error === "string"
+        ? result.error
+        : result.error?.message || "Spotify request failed.";
+    if (response.status === 403) {
+      throw new Error(
+        `Spotify returned 403 Forbidden: ${errorMessage}. Make sure you have authorized playlist-modify-public access, then reconnect Spotify and try again.`,
+      );
+    }
+    throw new Error(errorMessage);
   }
   return result;
 };
@@ -153,7 +162,7 @@ const Spotify = {
     );
     return getResponseJson(
       await fetch(
-        `https://api.spotify.com/v1/playlists/${playlist.id}/tracks`,
+        `https://api.spotify.com/v1/playlists/${playlist.id}/items`,
         {
           headers,
           method: "POST",
